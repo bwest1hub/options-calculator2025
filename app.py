@@ -8,7 +8,7 @@ st.title("Call Option Calculator")
 
 # --- Input parameters ---
 st.header("Option Parameters")
-S = st.number_input("Current Stock Price (S)", value=6.10, min_value=0.01, format="%.2f")
+S = st.number_input("Current Stock Price (S)", value=6.10, min_value=0.01, step=0.01, format="%.2f")
 K = st.number_input("Strike Price (K)", value=100.0, min_value=0.01, format="%f")
 premium = st.number_input("Option Premium (call price)", value=5.0, min_value=0.0, format="%f")
 sigma = st.number_input("Implied Volatility (σ, in %)", value=20.0, min_value=0.0, format="%f")
