@@ -93,3 +93,24 @@ ax.set_title("Call Option Payoff vs Profit at Expiration")
 ax.legend()
 st.pyplot(fig)
 plt.close(fig)
+
+# --- DAYS UNTIL EXPIRATION SLIDER ---
+expiry_days = 73  # total days until expiration (update if different)
+days_left = st.slider("Days until expiration", 1, expiry_days, expiry_days)
+T = days_left / 365  # convert days to years for Black-Scholes
+
+# Recalculate Black-Scholes price with updated T
+d1 = (np.log(S / K) + (r + 0.5 * sigma ** 2) * T) / (sigma * np.sqrt(T))
+d2 = d1 - sigma * np.sqrt(T)
+call_price = S * norm.cdf(d1) - K * np.exp(-r * T) * norm.cdf(d2)
+
+st.subheader(f"Call Price with {days_left} days left: ${call_price:.2f}")
+
+# Optional: update Greeks with new T
+delta = norm.cdf(d1)
+gamma = norm.pdf(d1) / (S * sigma * np.sqrt(T))
+theta = -(S * norm.pdf(d1) * sigma) / (2 * np.sqrt(T)) - r * K * np.exp(-r * T) * norm.cdf(d2)
+vega = S * np.sqrt(T) * norm.pdf(d1)
+rho = K * T * np.exp(-r * T) * norm.cdf(d2)
+
+st.write(f"Delta: {delta:.4f}, Gamma: {gamma:.4f}, Theta/day: {theta:.4f}, Vega: {vega:.4f}, Rho: {rho:.4f}")
